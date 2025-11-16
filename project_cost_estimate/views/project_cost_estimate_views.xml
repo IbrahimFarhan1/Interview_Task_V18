@@ -1,0 +1,97 @@
+<odoo>
+    <!--    Form View Record-->
+    <record id="project_cost_estimate_view_form" model="ir.ui.view">
+        <field name="name">project_cost_estimate_view_form</field>
+        <field name="model">project.cost.estimate</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" widget="statusbar"/>
+                    <button name="action_submit" string="Submit" type="object" class="btn-primary"
+                            invisible="state != 'draft'"/>
+                    <button name="action_approve" string="Approve" type="object" class="btn-success"
+                            invisible="state != 'submitted'"/>
+                    <button name="action_reject" string="Reject" type="object" class="btn-danger"
+                            invisible="state != 'submitted'"/>
+
+                    <button name="action_set_draft" string="Set to Draft" type="object" invisible="state == 'draft'"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name" readonly="state in ['submitted', 'approved', 'rejected']"/>
+                        <field name="project_id" readonly="state in ['submitted', 'approved', 'rejected']"/>
+                        <field name="estimated_total_cost"/>
+                    </group>
+
+                    <notebook>
+                        <page string="Breakdown">
+                            <field name="breakdown_ids" readonly="state in ['submitted', 'approved', 'rejected']">
+                                <list editable="bottom">
+                                    <field name="name"
+                                           readonly="parent.state in ['submitted', 'approved', 'rejected']"/>
+                                    <field name="amount"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+    <!--    Tree View Record-->
+    <record id="project_cost_estimate_view_tree" model="ir.ui.view">
+        <field name="name">project_cost_estimate_view_tree</field>
+        <field name="model">project.cost.estimate</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="project_id"/>
+                <field name="estimated_total_cost"/>
+            </list>
+        </field>
+    </record>
+
+    <!--    Kanban View-->
+    <record id="project_cost_estimate_view_kanban" model="ir.ui.view">
+        <field name="name">project_cost_estimate_view_kanban</field>
+        <field name="model">project.cost.estimate</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="estimated_total_cost"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_card">
+                            <strong>
+                                <t t-esc="record.name.value"/>
+                            </strong>
+                            <div>Project:
+                                <t t-esc="record.project_id.value"/>
+                            </div>
+                            <div>Estimated Cost:
+                                <t t-esc="record.estimated_total_cost.value"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!--    Action Record-->
+    <record id="project_cost_estimate_action" model="ir.actions.act_window">
+        <field name="name">Project Cost Estimate</field>
+        <field name="res_model">project.cost.estimate</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first record
+            </p>
+        </field>
+    </record>
+    <menuitem id="menu_project_cost_estimate_root" name="Project Cost Estimate" parent="project.menu_main_pm"
+              action="project_cost_estimate_action" sequence="1"/>
+</odoo>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_project_project_form_inherit_estimates" model="ir.ui.view">
+        <field name="name">project.project.form.inherit.cost.estimates</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+
+            <!-- Add smart button inside the button_box -->
+            <xpath expr="//div[@class='oe_button_box']" position="inside">
+                <button class="oe_stat_button"
+                        type="object"
+                        name="action_view_latest_cost_estimate"
+                        icon="fa-money">
+                    <field name="amount" widget="statinfo" string="Cost Estimates"/>
+                </button>
+            </xpath>
+
+            <!-- Hidden field (required for display) -->
+            <xpath expr="//div[@class='oe_button_box']" position="after">
+                <field name="estimate_ids" invisible="1"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- Add latest_cost_estimate_id field to project.project via model extension -->
+    <record id="view_project_project_kanban_inherit_cost" model="ir.ui.view">
+        <field name="name">project.project.kanban.inherit.latest.cost</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//t[@t-name='card']/footer" position="before">
+                <div class="ms-1 mt-2 text-muted">
+                    <span class="fa fa-money me-1"></span>
+                    <span>Latest Estimate:</span>
+                    <field name="amount"/>
+                </div>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

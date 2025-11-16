@@ -1,0 +1,33 @@
+<odoo>
+    <data>
+        <record id="email_template_cost_estimate_notification" model="mail.template">
+            <field name="name">Cost Estimate - Approval Notification</field>
+            <field name="model_id" ref="project_cost_estimate.model_project_cost_estimate"/>
+
+            <field name="email_to">{{ object.create_uid.email }}</field>
+            <field name="email_from">{{ object.company_id.email }} </field>
+            <field name="subject">
+                Cost Estimate "{{ object.name }}" has been {{ object.state }}
+            </field>
+
+            <field name="body_html">
+                <![CDATA[
+                    <p>Hello {{ object.create_uid.name }},</p>
+
+                    <p>Your cost estimate
+                        <strong>{{ object.name }}</strong>
+                        for project
+                        <strong>{{ object.project_id.name }}</strong>
+                        has been <strong>{{ object.state }}</strong>.
+                    </p>
+
+                    <p>
+                        <strong>Estimated Total Cost:</strong>
+                        {{ object.estimated_total_cost }}
+                    </p>
+                    <p>Regards,<br/>{{ user.name }}</p>
+                ]]>
+            </field>
+        </record>
+    </data>
+</odoo>

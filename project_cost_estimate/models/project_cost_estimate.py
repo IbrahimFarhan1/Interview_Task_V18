@@ -4,7 +4,6 @@ from odoo.exceptions import UserError, ValidationError
 
 class ProjectCostEstimate(models.Model):
     _name = 'project.cost.estimate'
-    _description = 'Sample Model'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     
     name = fields.Char(string='Name', required=True)
@@ -17,6 +16,7 @@ class ProjectCostEstimate(models.Model):
         ('approved', 'Approved'),
         ('rejected', 'Rejected'),
     ], string='Status', default='draft', tracking=True)
+    company_id = fields.Many2one('res.company', string='Company', required=True, default=lambda self: self.env.company)
 
     @api.depends('breakdown_ids.amount')
     def _compute_estimated_total_cost(self):
@@ -29,10 +29,8 @@ class ProjectCostEstimate(models.Model):
 
     def action_submit(self):
         #Submit estimate: only Project Admins or members allowed
-        if not self.env.user.has_group('project_cost_estimate.group_project_admin') and not self.env.user.has_group('project_cost_estimate.group_project_user'):
+        if not self.env.user.has_group('project_cost_estimate.group_project_cost_estimate_admin') and not self.env.user.has_group('project_cost_estimate.group_project_cost_estimate_user'):
             raise UserError(_('You do not have permission to submit estimates.'))
-        if self.state != 'draft':
-            raise UserError(_('Only draft estimates can be submitted.'))
         self.state = 'submitted'
 
     def action_approve(self):
@@ -41,10 +39,10 @@ class ProjectCostEstimate(models.Model):
         if self.state != 'submitted':
             raise UserError(_('Only submitted estimates can be approved.'))
         self.state = 'approved'
-        # # Send notification to creator
-        # template = self.env.ref('project_cost_estimate.email_template_cost_estimate_notification', raise_if_not_found=False)
-        # if template:
-        #     template.send_mail(self.id, force_send=True)
+        # Send notification to creator
+        template = self.env.ref('project_cost_estimate.email_template_cost_estimate_notification', raise_if_not_found=False)
+        if template:
+            template.send_mail(self.id, force_send=True)
 
     def action_reject(self, note=False):
         self.ensure_one()
@@ -53,9 +51,9 @@ class ProjectCostEstimate(models.Model):
         if self.state != 'submitted':
             raise UserError(_('Only submitted estimates can be rejected.'))
         self.state = 'rejected'
-        # template = self.env.ref('project_cost_estimate.email_template_cost_estimate_notification', raise_if_not_found=False)
-        # if template:
-        #     template.send_mail(self.id, force_send=True)
+        template = self.env.ref('project_cost_estimate.email_template_cost_estimate_notification', raise_if_not_found=False)
+        if template:
+            template.send_mail(self.id, force_send=True)
 
 
 class ProjectCostBreakdown(models.Model):

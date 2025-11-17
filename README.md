@@ -22,7 +22,6 @@ The module adds cost estimation functionality to Odoo Projects, including cost b
 
 ### ✅ Cost Breakdown Lines
 - New model: `project.cost.breakdown`
-- Fields: description, unit cost, quantity, subtotal
 - Subtotal computed per line
 - One-to-many relationship with cost estimates
 

@@ -4,6 +4,8 @@
 The module is deployed and available for review at:
 
 🔗 **http://38.242.156.95:8069/odoo/project**
+      -Email:admin
+      -Password:admin
 
 ---
 

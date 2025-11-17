@@ -1,4 +1,11 @@
-# Project Cost Estimation – Odoo Custom Module
+# Project Cost Estimation – Odoo Custom Module V 18
+
+## 🚀 Live Demo
+The module is deployed and available for review at:
+
+🔗 **http://38.242.156.95:8069/odoo/project**
+
+---
 
 The module adds cost estimation functionality to Odoo Projects, including cost breakdowns, workflow approval, permissions, sequences, and email notifications.
 
@@ -76,10 +83,4 @@ A custom kanban view provides:
 
 ### ✔ Latest Estimate on Project Kanban
 Each project kanban card displays its **latest** cost estimate automatically.
-
----
-
-## 🔢 Sequence for Estimates
-
-A system-wide sequence is defined:
 

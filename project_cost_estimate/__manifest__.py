@@ -1,6 +1,7 @@
 {
     'name': "project cost estimate",
     'version': '18.0',
+    'author': "Ibrahim Mohamed",
     'depends': ['base', 'mail', 'project'],
     'data': [
         'security/security.xml',
